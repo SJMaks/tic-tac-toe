@@ -1,11 +1,13 @@
 using Leopotam.EcsLite;
+using Leopotam.EcsLite.Di;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameInitSystem : IEcsInitSystem
 {
-    EcsWorld _world = null;
+    private EcsWorld _world = null;
+    private readonly EcsCustomInject<CellInitData> _cellConfig = default;
 
     public GameInitSystem(EcsWorld world)
     {
@@ -15,6 +17,8 @@ public class GameInitSystem : IEcsInitSystem
     public void Init(IEcsSystems systems)
     {
         int cell = _world.NewEntity();
+
+        Debug.Log(_cellConfig.Value.CellPrefab);
 
         EcsPool<CellStateComponent> cellStatePool = _world.GetPool<CellStateComponent>();
         EcsPool<ClickableComponent> clickablePool = _world.GetPool<ClickableComponent>();
