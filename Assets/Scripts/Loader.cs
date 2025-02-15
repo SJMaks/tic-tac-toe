@@ -17,8 +17,9 @@ public class Loader : MonoBehaviour
         _systems = new EcsSystems(_world);
 
         _systems
-            .Add(new GameInitSystem(_world))
+            .Add(new InitCellsSystem())
             .Add(new CellClickSystem())
+            .Add(new SpawnCellsSystem())
             .Inject(_cellInitData)
             .Init();
     }

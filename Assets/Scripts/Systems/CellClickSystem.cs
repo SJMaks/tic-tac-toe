@@ -40,18 +40,23 @@ public class CellClickSystem : IEcsRunSystem
     private void OnClickButton(int entity)
     {
         ref CellStateComponent cellState = ref _cellStates.Get(entity);
+        ref ClickableComponent clickable = ref _clickables.Get(entity);
+        SpriteRenderer sprite = clickable.GameObject.GetComponent<SpriteRenderer>();
 
         if (cellState.State == CellStates.Empty)
         {
             cellState.State = CellStates.Cross;
+            sprite.color = Color.red;
         }
         else if (cellState.State == CellStates.Cross)
         {
             cellState.State = CellStates.Zero;
+            sprite.color = Color.blue;
         }
         else
         {
             cellState.State = CellStates.Empty;
+            sprite.color = Color.white;
         }
         Debug.Log("Cell clicked - " + cellState.State);
     }
