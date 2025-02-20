@@ -9,14 +9,12 @@ public class SpawnCellsSystem : IEcsInitSystem
     private readonly EcsCustomInject<CellInitData> _cellConfig = default;
 
     private EcsFilter _filter;
-    private EcsPool<CellStateComponent> _cellStates;
     private EcsPool<ClickableComponent> _clickables;
     private EcsPool<PositionComponent> _positions;
     public void Init(IEcsSystems systems)
     {
         EcsWorld world = systems.GetWorld();
 
-        _cellStates = world.GetPool<CellStateComponent>();
         _clickables = world.GetPool<ClickableComponent>();
         _positions = world.GetPool<PositionComponent>();
 
