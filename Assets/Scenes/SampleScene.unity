@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellInitData: {fileID: 11400000, guid: 73d4c88457da8c641800bca74fa5d0fe, type: 2}
+  _winCombinations: {fileID: 11400000, guid: 01f3e9c1d61a8e44598166eeecb6fb6b, type: 2}
 --- !u!4 &875586432
 Transform:
   m_ObjectHideFlags: 0

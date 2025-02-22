@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eade22762af957b44a6bfa350159fe87, type: 3}
+  m_Name: WinCombinations
+  m_EditorClassIdentifier: 
+  Combinations:
+  - Array: 000000000100000002000000
+  - Array: 030000000400000005000000
+  - Array: 060000000700000008000000
+  - Array: 000000000300000006000000
+  - Array: 010000000400000007000000
+  - Array: 020000000500000008000000
+  - Array: 000000000400000008000000
+  - Array: 020000000400000006000000
