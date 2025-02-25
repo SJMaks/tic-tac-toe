@@ -1,15 +1,13 @@
 using Leopotam.EcsLite;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.EventSystems.EventTrigger;
+using static Unity.VisualScripting.Metadata;
 
-public class SetCellStateSystem : IEcsRunSystem
+public class SwitchPlayerInputTurnSystem : IEcsRunSystem
 {
     private EcsFilter _clickEventFilter;
     private EcsFilter _playerInputFilter;
     private EcsPool<ClickEventComponent> _clickEvents;
     private EcsPool<CellStateComponent> _cellStates;
-    private EcsPool<ClickableComponent> _clickables;
     private EcsPool<ParentLinkComponent> _parents;
     private EcsPool<PlayerInputComponent> _playerInputs;
 
@@ -22,7 +20,6 @@ public class SetCellStateSystem : IEcsRunSystem
 
         _clickEvents = world.GetPool<ClickEventComponent>();
         _cellStates = world.GetPool<CellStateComponent>();
-        _clickables = world.GetPool<ClickableComponent>();
         _parents = world.GetPool<ParentLinkComponent>();
         _playerInputs = world.GetPool<PlayerInputComponent>();
 
@@ -37,31 +34,16 @@ public class SetCellStateSystem : IEcsRunSystem
 
                 if (hasState && hasParent)
                 {
-                    SetCellState(playerInputEntity, clickEventComponent.Entity);
+                    SwitchTurn(playerInputEntity);
                 }
             }
         }
     }
-    private void SetCellState(int playerInputEntity, int cellEntity)
-    {
-        ref PlayerInputComponent playerInputComponent = ref _playerInputs.Get(playerInputEntity);
 
-        ref CellStateComponent cellState = ref _cellStates.Get(cellEntity);
-        ref ClickableComponent clickable = ref _clickables.Get(cellEntity);
-        SpriteRenderer sprite = clickable.GameObject.GetComponent<SpriteRenderer>();
+    void SwitchTurn(int entity)
+    { 
+        ref PlayerInputComponent playerInputComponent = ref _playerInputs.Get(entity);
 
-        if (cellState.State == CellStates.Empty)
-        {
-            if (playerInputComponent.Turn)
-            {
-                cellState.State = CellStates.Cross;
-                sprite.color = Color.red;
-            }
-            else
-            {
-                cellState.State = CellStates.Zero;
-                sprite.color = Color.blue;
-            }
-        }
+        playerInputComponent.Turn = !playerInputComponent.Turn;
     }
 }
