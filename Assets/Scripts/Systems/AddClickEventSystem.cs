@@ -10,7 +10,7 @@ public class AddClickEventSystem : IEcsRunSystem
 
     public void Run(IEcsSystems systems)
     {
-        if (!Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1)) return;
+        if (!Input.GetMouseButtonDown(0)) return;
 
         EcsWorld world = systems.GetWorld();
 
