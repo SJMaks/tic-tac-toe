@@ -12,6 +12,8 @@ public class CheckCellStateSystem : IEcsRunSystem
     private EcsPool<CellStateComponent> _cellStates;
     private EcsPool<ParentLinkComponent> _parents;
     private EcsPool<ChildrenLinkComponent> _children;
+    private EcsPool<MainFieldComponent> _mainField;
+
     public void Run(IEcsSystems systems)
     {
         EcsWorld world = systems.GetWorld();
@@ -22,6 +24,7 @@ public class CheckCellStateSystem : IEcsRunSystem
         _cellStates = world.GetPool<CellStateComponent>();
         _parents = world.GetPool<ParentLinkComponent>();
         _children = world.GetPool<ChildrenLinkComponent>();
+        _mainField = world.GetPool<MainFieldComponent>();
 
         foreach (int entity in _filter)
         {
@@ -66,15 +69,22 @@ public class CheckCellStateSystem : IEcsRunSystem
             }
         }
 
-        //TODO: рекурсивная проверка всех родителей
-
-        if (currentStateComponent.State == CellStates.Cross)
+        if (_mainField.Has(entity))
         {
-            Debug.Log("Победили крестики!");
+            if (currentStateComponent.State == CellStates.Cross)
+            {
+                Debug.Log("Победили крестики!");
+            }
+            else if (currentStateComponent.State == CellStates.Zero)
+            {
+                Debug.Log("Победили нолики!");
+            }
         }
-        else if (currentStateComponent.State == CellStates.Zero)
+
+        if (_parents.Has(entity))
         {
-            Debug.Log("Победили нолики!");
+            ref ParentLinkComponent parentComponent = ref _parents.Get(entity);
+            CheckParentCellState(parentComponent.Parent);
         }
     }
 }
