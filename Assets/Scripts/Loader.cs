@@ -23,9 +23,9 @@ public class Loader : MonoBehaviour
             .Add(new InitCellsSystem())
             .Add(new SpawnCellsSystem())
             .Inject(_cellInitData)
-            .Add(new AddClickEventSystem())
+            .Add(new AddClickEventSystem()).Add(new SwitchPlayerInputTurnSystem())
             .Add(new SetCellStateSystem())
-            .Add(new SwitchPlayerInputTurnSystem())
+            
             .Add(new CheckCellStateSystem())
             .Inject(_winCombinations)
             .Add(new RemoveClickEventSystem())

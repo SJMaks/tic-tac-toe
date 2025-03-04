@@ -28,11 +28,11 @@ public class SwitchPlayerInputTurnSystem : IEcsRunSystem
             foreach (int clickEventEntity in _clickEventFilter)
             {
                 ref ClickEventComponent clickEventComponent = ref _clickEvents.Get(clickEventEntity);
-
+                ref var cellStaete = ref _cellStates.Get(clickEventComponent.Entity);
                 bool hasState = _cellStates.Has(clickEventComponent.Entity);
                 bool hasParent = _parents.Has(clickEventComponent.Entity);
 
-                if (hasState && hasParent)
+                if (hasState && hasParent && cellStaete.State == CellStates.Empty)
                 {
                     SwitchTurn(playerInputEntity);
                 }
