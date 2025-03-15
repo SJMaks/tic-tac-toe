@@ -14,7 +14,7 @@ public class AddClickEventSystem : IEcsRunSystem
 
         EcsWorld world = systems.GetWorld();
 
-        _filter = world.Filter<ClickableComponent>().End();
+        _filter = world.Filter<ClickableComponent>().Inc<ActiveComponent>().End();
 
         _clickEvents = world.GetPool<ClickEventComponent>();
         _clickables = world.GetPool<ClickableComponent>();

@@ -2,14 +2,9 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
 
-public struct CellLevelComponent
-{
-    public int Level;
-}
-
 public class InitCellsSystem : IEcsInitSystem
 {
-    [Range(1, 5)]
+    [Range(1, 3)]
     public int RecursionLevel = 2; // Уровень рекурсии можно менять в инспекторе
 
     public void Init(IEcsSystems systems)
@@ -20,7 +15,6 @@ public class InitCellsSystem : IEcsInitSystem
         var positionPool = world.GetPool<PositionComponent>();
         var parentPool = world.GetPool<ParentLinkComponent>();
         var childrenPool = world.GetPool<ChildrenLinkComponent>();
-        var levelPool = world.GetPool<CellLevelComponent>();
         var mainFieldPool = world.GetPool<MainFieldComponent>();
 
         // Создаем корневую сущность
@@ -28,7 +22,6 @@ public class InitCellsSystem : IEcsInitSystem
         cellStatePool.Add(rootEntity).State = CellStates.Empty;
         ref var rootChildren = ref childrenPool.Add(rootEntity);
         rootChildren.Children = new int[9]; // Инициализируем массив
-        levelPool.Add(rootEntity).Level = RecursionLevel;
         mainFieldPool.Add(rootEntity).Entity = rootEntity;
         positionPool.Add(rootEntity).Position = Vector2.zero;
 
@@ -47,10 +40,11 @@ public class InitCellsSystem : IEcsInitSystem
         var positionPool = world.GetPool<PositionComponent>();
         var parentLinkPool = world.GetPool<ParentLinkComponent>();
         var childrenPool = world.GetPool<ChildrenLinkComponent>();
-        var levelPool = world.GetPool<CellLevelComponent>();
+        var activePool = world.GetPool<ActiveComponent>();
 
         if (currentLevel == 0)
         {
+            activePool.Add(parentEntity);
             clickablePool.Add(parentEntity);
             return;
         }
@@ -64,7 +58,7 @@ public class InitCellsSystem : IEcsInitSystem
 
         // Создаем дочерние клетки
         ref var parentChildren = ref childrenPool.Get(parentEntity);
-        float step = Camera.main.orthographicSize * (1f / (RecursionLevel * (Camera.main.orthographicSize + 5))) * Mathf.Pow(3, currentLevel);
+        float step = (Mathf.Pow(3, currentLevel) - currentLevel) * 0.5f;
 
         for (int i = 0; i < 9; i++)
         {
@@ -83,7 +77,6 @@ public class InitCellsSystem : IEcsInitSystem
             cellStatePool.Add(childEntity).State = CellStates.Empty;
             positionPool.Add(childEntity).Position = childPosition;
             parentLinkPool.Add(childEntity).Parent = parentEntity;
-            levelPool.Add(childEntity).Level = currentLevel - 1;
 
             // Рекурсивный вызов
             CreateSubCells(world, childEntity, currentLevel - 1, childPosition);
