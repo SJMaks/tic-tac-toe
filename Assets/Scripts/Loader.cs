@@ -24,10 +24,11 @@ public class Loader : MonoBehaviour
             .Add(new SpawnCellsSystem())
             .Inject(_cellInitData)
             .Add(new AddClickEventSystem())
-            .Add(new SetCellStateSystem())
             .Add(new SwitchPlayerInputTurnSystem())
+            .Add(new SetCellStateSystem())
             .Add(new CheckCellStateSystem())
             .Inject(_winCombinations)
+            .Add(new BlockCellsSystem())
             .Add(new RemoveClickEventSystem())
             .Init();
     }

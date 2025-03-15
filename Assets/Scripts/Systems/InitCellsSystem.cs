@@ -1,48 +1,85 @@
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
-using UnityEngine.LightTransport;
 
 public class InitCellsSystem : IEcsInitSystem
 {
+    [Range(1, 3)]
+    public int RecursionLevel = 2; // Уровень рекурсии можно менять в инспекторе
+
     public void Init(IEcsSystems systems)
     {
         EcsWorld world = systems.GetWorld();
 
-        int mainField = world.NewEntity();
+        var cellStatePool = world.GetPool<CellStateComponent>();
+        var positionPool = world.GetPool<PositionComponent>();
+        var parentPool = world.GetPool<ParentLinkComponent>();
+        var childrenPool = world.GetPool<ChildrenLinkComponent>();
+        var mainFieldPool = world.GetPool<MainFieldComponent>();
 
-        EcsPool<CellStateComponent> cellStatePool = world.GetPool<CellStateComponent>();
-        EcsPool<ClickableComponent> clickablePool = world.GetPool<ClickableComponent>();
-        EcsPool<PositionComponent> positionPool = world.GetPool<PositionComponent>();
-        EcsPool<ParentLinkComponent> parentPool = world.GetPool<ParentLinkComponent>();
-        EcsPool<ChildrenLinkComponent> childrenPool = world.GetPool<ChildrenLinkComponent>();
+        // Создаем корневую сущность
+        int rootEntity = world.NewEntity();
+        cellStatePool.Add(rootEntity).State = CellStates.Empty;
+        ref var rootChildren = ref childrenPool.Add(rootEntity);
+        rootChildren.Children = new int[9]; // Инициализируем массив
+        mainFieldPool.Add(rootEntity).Entity = rootEntity;
+        positionPool.Add(rootEntity).Position = Vector2.zero;
 
-        ref CellStateComponent mainCellStateComponent = ref cellStatePool.Add(mainField);
-        ref ChildrenLinkComponent mainChildrenLinkComponent = ref childrenPool.Add(mainField);
+        // Запускаем рекурсивное создание структуры
+        CreateSubCells(world, rootEntity, RecursionLevel, Vector2.zero);
+    }
 
-        int[] mainChildren = new int[9];
+    private void CreateSubCells(
+        EcsWorld world,
+        int parentEntity,
+        int currentLevel,
+        Vector2 parentPosition)
+    {
+        var cellStatePool = world.GetPool<CellStateComponent>();
+        var clickablePool = world.GetPool<ClickableComponent>();
+        var positionPool = world.GetPool<PositionComponent>();
+        var parentLinkPool = world.GetPool<ParentLinkComponent>();
+        var childrenPool = world.GetPool<ChildrenLinkComponent>();
+        var activePool = world.GetPool<ActiveComponent>();
 
-        int k = 0;
-        for (int i = 0; i < 3; i++)
+        if (currentLevel == 0)
         {
-            for (int j = 0; j < 3; j++)
-            {
-                int cell = world.NewEntity();
-
-                mainChildren[k] = cell;
-                k++;
-
-                ref CellStateComponent cellStateComponent = ref cellStatePool.Add(cell);
-                ref ClickableComponent clickableComponent = ref clickablePool.Add(cell);
-                ref PositionComponent positionComponent = ref positionPool.Add(cell);
-                ref ParentLinkComponent parentComponent = ref parentPool.Add(cell);
-
-                parentComponent.Parent = mainField; 
-                cellStateComponent.State = CellStates.Empty;
-                positionComponent.Position = new Vector2(j * 1.5f - 1.5f, i * 1.5f - 1.5f);
-            }
+            activePool.Add(parentEntity);
+            clickablePool.Add(parentEntity);
+            return;
         }
 
-        mainChildrenLinkComponent.Children = mainChildren;
+        // Гарантируем наличие компонента ChildrenLink у родителя
+        if (!childrenPool.Has(parentEntity))
+        {
+            ref var children = ref childrenPool.Add(parentEntity);
+            children.Children = new int[9];
+        }
+
+        // Создаем дочерние клетки
+        ref var parentChildren = ref childrenPool.Get(parentEntity);
+        float step = (Mathf.Pow(3, currentLevel) - currentLevel) * 0.5f;
+
+        for (int i = 0; i < 9; i++)
+        {
+            int childEntity = world.NewEntity();
+            parentChildren.Children[i] = childEntity;
+
+            // Рассчет позиции
+            int x = i % 3;
+            int y = i / 3;
+            Vector2 childPosition = new Vector2(
+                parentPosition.x + (x - 1) * step,
+                parentPosition.y + (y - 1) * step
+            );
+
+            // Добавляем компоненты
+            cellStatePool.Add(childEntity).State = CellStates.Empty;
+            positionPool.Add(childEntity).Position = childPosition;
+            parentLinkPool.Add(childEntity).Parent = parentEntity;
+
+            // Рекурсивный вызов
+            CreateSubCells(world, childEntity, currentLevel - 1, childPosition);
+        }
     }
 }

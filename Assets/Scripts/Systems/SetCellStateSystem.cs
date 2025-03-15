@@ -52,7 +52,7 @@ public class SetCellStateSystem : IEcsRunSystem
 
         if (cellState.State == CellStates.Empty)
         {
-            if (playerInputComponent.Turn)
+            if (!playerInputComponent.Turn)
             {
                 cellState.State = CellStates.Cross;
                 sprite.color = Color.red;
