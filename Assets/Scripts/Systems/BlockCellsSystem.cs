@@ -62,8 +62,11 @@ public class BlockCellsSystem : IEcsRunSystem
                     {
                         for (int i = 0; i < 9; i++)
                         {
-                            if (i != index)
+                            ref CellStateComponent iCellState = ref _cellStates.Get(mainChildren.Children[i]);
+                            if (i != index && iCellState.State == CellStates.Empty)
+                            {
                                 AddActiveComponent(mainChildren.Children[i]);
+                            }
                         }
                     }
                     else

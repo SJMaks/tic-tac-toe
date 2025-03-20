@@ -47,8 +47,6 @@ public class CheckCellStateSystem : IEcsRunSystem
         ref ChildrenLinkComponent childrenComponent = ref _children.Get(entity);
         ref CellStateComponent currentStateComponent = ref _cellStates.Get(entity);
 
-        //TODO: проверка на количество детей
-
         CellStates[] cellStates = new CellStates[9];
         int i = 0;
         foreach (int child in childrenComponent.Children)

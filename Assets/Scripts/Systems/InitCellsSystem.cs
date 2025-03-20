@@ -5,7 +5,7 @@ using UnityEngine;
 public class InitCellsSystem : IEcsInitSystem
 {
     [Range(1, 3)]
-    public int RecursionLevel = 2; // Уровень рекурсии можно менять в инспекторе
+    public int RecursionLevel = 3; // Уровень рекурсии можно менять в инспекторе
 
     public void Init(IEcsSystems systems)
     {
@@ -16,6 +16,8 @@ public class InitCellsSystem : IEcsInitSystem
         var parentPool = world.GetPool<ParentLinkComponent>();
         var childrenPool = world.GetPool<ChildrenLinkComponent>();
         var mainFieldPool = world.GetPool<MainFieldComponent>();
+        var levelPool = world.GetPool<CellLevelComponent>();
+        var gameObjectPool = world.GetPool<GameObjectComponent>();
 
         // Создаем корневую сущность
         int rootEntity = world.NewEntity();
@@ -24,6 +26,8 @@ public class InitCellsSystem : IEcsInitSystem
         rootChildren.Children = new int[9]; // Инициализируем массив
         mainFieldPool.Add(rootEntity).Entity = rootEntity;
         positionPool.Add(rootEntity).Position = Vector2.zero;
+        levelPool.Add(rootEntity).Level = RecursionLevel;
+        gameObjectPool.Add(rootEntity);
 
         // Запускаем рекурсивное создание структуры
         CreateSubCells(world, rootEntity, RecursionLevel, Vector2.zero);
@@ -41,6 +45,8 @@ public class InitCellsSystem : IEcsInitSystem
         var parentLinkPool = world.GetPool<ParentLinkComponent>();
         var childrenPool = world.GetPool<ChildrenLinkComponent>();
         var activePool = world.GetPool<ActiveComponent>();
+        var levelPool = world.GetPool<CellLevelComponent>();
+        var gameObjectPool = world.GetPool<GameObjectComponent>();
 
         if (currentLevel == 0)
         {
@@ -58,7 +64,7 @@ public class InitCellsSystem : IEcsInitSystem
 
         // Создаем дочерние клетки
         ref var parentChildren = ref childrenPool.Get(parentEntity);
-        float step = (Mathf.Pow(3, currentLevel) - currentLevel) * 0.5f;
+        float step = (Mathf.Pow(3, currentLevel) - currentLevel) * 0.75f;
 
         for (int i = 0; i < 9; i++)
         {
@@ -77,6 +83,8 @@ public class InitCellsSystem : IEcsInitSystem
             cellStatePool.Add(childEntity).State = CellStates.Empty;
             positionPool.Add(childEntity).Position = childPosition;
             parentLinkPool.Add(childEntity).Parent = parentEntity;
+            levelPool.Add(childEntity).Level = currentLevel - 1;
+            gameObjectPool.Add(childEntity);
 
             // Рекурсивный вызов
             CreateSubCells(world, childEntity, currentLevel - 1, childPosition);

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bebcd3447e83bc4c8aba3575f1769c3, type: 3}
+  m_Name: FieldInitData
+  m_EditorClassIdentifier: 
+  FieldPrefab: {fileID: 7682792553840853560, guid: 2c3d7b00db0982240853ff261ec500cf, type: 3}
+  FieldScales:
+  - 4.5
+  - 15.5
+  - 55
+  - 200
