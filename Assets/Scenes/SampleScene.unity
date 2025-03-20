@@ -372,6 +372,7 @@ MonoBehaviour:
   _cellInitData: {fileID: 11400000, guid: 73d4c88457da8c641800bca74fa5d0fe, type: 2}
   _fieldInitData: {fileID: 11400000, guid: 073cdec62a5c5c846bf2709cdba982ed, type: 2}
   _winCombinations: {fileID: 11400000, guid: 01f3e9c1d61a8e44598166eeecb6fb6b, type: 2}
+  _gameConfiguration: {fileID: 11400000, guid: 47d981dca4cb75248972d958d779d546, type: 2}
 --- !u!4 &875586432
 Transform:
   m_ObjectHideFlags: 0

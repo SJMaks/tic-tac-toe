@@ -1,20 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 
-[System.Serializable]
-public class SceneLoadData
-{
-    public SceneAsset Scene;
-    public int Recursion;
-}
-
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField]
     private GameConfiguration _gameConfiguration;
 
     [SerializeField]
-    private SceneLoadData _sceneLoadData;
+    private SceneAsset _scene;
 
     private LoaderService _loaderService;
 
@@ -23,8 +16,8 @@ public class SceneLoader : MonoBehaviour
         _loaderService = new LoaderService(_gameConfiguration);
     }
 
-    public void LoadScene()
+    public void LoadScene(int recursion)
     {
-        _loaderService.SetRecursionAndLoad(_sceneLoadData.Recursion, _sceneLoadData.Scene);
+        _loaderService.SetRecursionAndLoad(recursion, _scene);
     }
 }

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41d728cb427bc63439b778fc22a60542, type: 3}
   m_Name: GameConfiguration
   m_EditorClassIdentifier: 
-  RecursionLevel: 1
+  RecursionLevel: 3

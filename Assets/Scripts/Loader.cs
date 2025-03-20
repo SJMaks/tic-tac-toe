@@ -10,6 +10,8 @@ public class Loader : MonoBehaviour
     private FieldInitData _fieldInitData;
     [SerializeField]
     private WinCombinations _winCombinations;
+    [SerializeField]
+    private GameConfiguration _gameConfiguration;
 
     private EcsWorld _world;
     private EcsSystems _systems;
@@ -22,6 +24,7 @@ public class Loader : MonoBehaviour
 
         _systems
             .Add(new PlayerInputInitSystem())
+            .Inject(_gameConfiguration)
             .Add(new InitCellsSystem())
             .Add(new SpawnCellsSystem())
             .Inject(_cellInitData)
@@ -39,6 +42,7 @@ public class Loader : MonoBehaviour
             .Add(new SetCellBlockSpriteSystem())
             .Inject(_cellInitData)
             .Add(new RemoveClickEventSystem())
+            .Inject(_gameConfiguration)
             .Init();
     }
 

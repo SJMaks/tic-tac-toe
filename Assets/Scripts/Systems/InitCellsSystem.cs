@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class InitCellsSystem : IEcsInitSystem
 {
-    [Range(1, 3)]
-    public int RecursionLevel = 3; // ”ровень рекурсии можно мен€ть в инспекторе
+    private readonly EcsCustomInject<GameConfiguration> _gameConfig = default;
 
     public void Init(IEcsSystems systems)
     {
@@ -26,11 +25,11 @@ public class InitCellsSystem : IEcsInitSystem
         rootChildren.Children = new int[9]; // »нициализируем массив
         mainFieldPool.Add(rootEntity).Entity = rootEntity;
         positionPool.Add(rootEntity).Position = Vector2.zero;
-        levelPool.Add(rootEntity).Level = RecursionLevel;
+        levelPool.Add(rootEntity).Level = _gameConfig.Value.RecursionLevel;
         gameObjectPool.Add(rootEntity);
 
         // «апускаем рекурсивное создание структуры
-        CreateSubCells(world, rootEntity, RecursionLevel, Vector2.zero);
+        CreateSubCells(world, rootEntity, _gameConfig.Value.RecursionLevel, Vector2.zero);
     }
 
     private void CreateSubCells(
