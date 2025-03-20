@@ -4,4 +4,7 @@ using UnityEngine;
 public class CellInitData : ScriptableObject
 {
     public GameObject CellPrefab;
+    public Sprite zero;
+    public Sprite cross;
+    public Sprite block;
 }

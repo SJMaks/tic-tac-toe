@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: CellInitData
   m_EditorClassIdentifier: 
   CellPrefab: {fileID: 988718921782661801, guid: e9b732e0bd011214696013ac1957b19b, type: 3}
+  zero: {fileID: 2826493407183913623, guid: 6eb173c42d9ea274096778e5ed67730a, type: 3}
+  cross: {fileID: 8482712648628362555, guid: d3583a2d6713bfd4a978f42e7a15acdb, type: 3}
+  block: {fileID: 2537882373423050008, guid: 69fe8a581a66e534083bd9d6c0d724e6, type: 3}

@@ -7,6 +7,8 @@ public class Loader : MonoBehaviour
     [SerializeField]
     private CellInitData _cellInitData;
     [SerializeField]
+    private FieldInitData _fieldInitData;
+    [SerializeField]
     private WinCombinations _winCombinations;
 
     private EcsWorld _world;
@@ -23,12 +25,19 @@ public class Loader : MonoBehaviour
             .Add(new InitCellsSystem())
             .Add(new SpawnCellsSystem())
             .Inject(_cellInitData)
+            .Inject(_fieldInitData)
+            .Add(new SpawnFieldsViewSystem())
+            .Inject(_fieldInitData)
             .Add(new AddClickEventSystem())
             .Add(new SwitchPlayerInputTurnSystem())
             .Add(new SetCellStateSystem())
             .Add(new CheckCellStateSystem())
             .Inject(_winCombinations)
+            .Add(new SetCellSpriteSystem())
+            .Inject(_cellInitData)
             .Add(new BlockCellsSystem())
+            .Add(new SetCellBlockSpriteSystem())
+            .Inject(_cellInitData)
             .Add(new RemoveClickEventSystem())
             .Init();
     }
