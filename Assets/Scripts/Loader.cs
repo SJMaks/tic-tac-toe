@@ -1,3 +1,4 @@
+using Assets.Scripts.Systems;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class Loader : MonoBehaviour
             .Inject(_gameConfiguration)
             .Add(new InitCellsSystem())
             .Add(new SpawnCellsSystem())
+            .Add(new CameraScaleSystem())
             .Inject(_cellInitData)
             .Inject(_fieldInitData)
             .Add(new SpawnFieldsViewSystem())

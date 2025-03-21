@@ -11,7 +11,7 @@ public class InitCellsSystem : IEcsInitSystem
         EcsWorld world = systems.GetWorld();
 
         var cellStatePool = world.GetPool<CellStateComponent>();
-        var positionPool = world.GetPool<PositionComponent>();
+        var positionPool = world.GetPool<TransformComponent>();
         var parentPool = world.GetPool<ParentLinkComponent>();
         var childrenPool = world.GetPool<ChildrenLinkComponent>();
         var mainFieldPool = world.GetPool<MainFieldComponent>();
@@ -40,7 +40,7 @@ public class InitCellsSystem : IEcsInitSystem
     {
         var cellStatePool = world.GetPool<CellStateComponent>();
         var clickablePool = world.GetPool<ClickableComponent>();
-        var positionPool = world.GetPool<PositionComponent>();
+        var positionPool = world.GetPool<TransformComponent>();
         var parentLinkPool = world.GetPool<ParentLinkComponent>();
         var childrenPool = world.GetPool<ChildrenLinkComponent>();
         var activePool = world.GetPool<ActiveComponent>();

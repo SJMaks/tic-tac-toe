@@ -11,7 +11,7 @@ public class SpawnFieldsViewSystem : IEcsInitSystem
 
     private EcsFilter _filter;
 
-    private EcsPool<PositionComponent> _positions;
+    private EcsPool<TransformComponent> _positions;
     private EcsPool<CellLevelComponent> _levels;
     private EcsPool<ClickableComponent> _clickables;
     private EcsPool<ChildrenLinkComponent> _children;
@@ -20,7 +20,7 @@ public class SpawnFieldsViewSystem : IEcsInitSystem
     {
         EcsWorld world = systems.GetWorld();
 
-        _positions = world.GetPool<PositionComponent>();
+        _positions = world.GetPool<TransformComponent>();
         _levels = world.GetPool<CellLevelComponent>();
         _clickables = world.GetPool<ClickableComponent>();
         _children = world.GetPool<ChildrenLinkComponent>();
@@ -35,7 +35,7 @@ public class SpawnFieldsViewSystem : IEcsInitSystem
 
     private Transform spawnField(int entity)
     {
-        ref PositionComponent position = ref _positions.Get(entity);
+        ref TransformComponent position = ref _positions.Get(entity);
         ref CellLevelComponent level = ref _levels.Get(entity);
 
         GameObject spawnedFieldPrefab = GameObject.Instantiate(

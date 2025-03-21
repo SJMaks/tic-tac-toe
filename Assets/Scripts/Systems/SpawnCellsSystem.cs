@@ -11,7 +11,7 @@ public class SpawnCellsSystem : IEcsInitSystem
 
     private EcsFilter _filter;
     private EcsPool<ClickableComponent> _clickables;
-    private EcsPool<PositionComponent> _positions;
+    private EcsPool<TransformComponent> _positions;
     private EcsPool<ChildrenLinkComponent> _children;
     private EcsPool<GameObjectComponent> _gameObjects;
     private EcsPool<CellLevelComponent> _levels;
@@ -21,7 +21,7 @@ public class SpawnCellsSystem : IEcsInitSystem
         EcsWorld world = systems.GetWorld();
 
         _clickables = world.GetPool<ClickableComponent>();
-        _positions = world.GetPool<PositionComponent>();
+        _positions = world.GetPool<TransformComponent>();
         _children = world.GetPool<ChildrenLinkComponent>();
         _gameObjects = world.GetPool<GameObjectComponent>();
         _levels = world.GetPool<CellLevelComponent>();
@@ -38,12 +38,12 @@ public class SpawnCellsSystem : IEcsInitSystem
     {
         bool isClickable = _clickables.Has(entity);
 
-        ref PositionComponent position = ref _positions.Get(entity);
+        ref TransformComponent position = ref _positions.Get(entity);
         ref CellLevelComponent currentLevelComponent = ref _levels.Get(entity);
 
         Object spawnedCellPrefab = GameObject.Instantiate(_cellConfig.Value.CellPrefab, position.Position, Quaternion.identity);
         Transform currentCellTransform = spawnedCellPrefab.GetComponent<Transform>();
-
+        position.Scale = currentCellTransform.localScale;
         Transform spriteTransform = spawnedCellPrefab.GetComponent<Transform>().Find("Sprite");
         SpriteRenderer spriteRenderer = spriteTransform.gameObject.GetComponent<SpriteRenderer>();
         spriteTransform.localScale = new Vector3(
