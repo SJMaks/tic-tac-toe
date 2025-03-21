@@ -20,4 +20,9 @@ public class SceneLoader : MonoBehaviour
     {
         _loaderService.SetRecursionAndLoad(recursion, _scene);
     }
+
+    public void LoadScene()
+    {
+        _loaderService.LoadScene(_scene);
+    }
 }
